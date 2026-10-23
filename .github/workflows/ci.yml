@@ -1,0 +1,46 @@
+name: Store checks
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: ygg
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: yggcoffe_ci
+        ports: ["54329:5432"]
+        options: --health-cmd "pg_isready -U ygg -d yggcoffe_ci" --health-interval 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://ygg:ci_only_password@localhost:54329/yggcoffe_ci
+      APP_ORIGIN: http://localhost:3000
+      MFA_ENCRYPTION_KEY: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+      PAYMENT_PROVIDER: disabled
+      TRUST_PROXY: "false"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm test:docker
+      - run: pnpm db:migrate && pnpm db:seed
+      - run: pnpm build
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:e2e
+      - name: Stop isolated integration services
+        if: always()
+        run: docker compose -f compose.test.yaml down
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: test-results/

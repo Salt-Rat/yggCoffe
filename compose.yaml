@@ -1,0 +1,71 @@
+x-app: &app
+  image: yggcoffe-local:latest
+  pull_policy: never
+  env_file: .env
+  environment: &app-env
+    DATABASE_URL: postgresql://ygg:${DOCKER_POSTGRES_PASSWORD:-ygg_local_only}@postgres:5432/yggcoffe
+    APP_ORIGIN: ${DOCKER_APP_ORIGIN:-http://localhost:18080}
+    TRUST_PROXY: "true"
+    TRUSTED_IP_HEADER: x-real-ip
+    PAYMENT_PROVIDER: disabled
+  init: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  mem_limit: 768m
+  cpus: 2
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ygg
+      POSTGRES_PASSWORD: ${DOCKER_POSTGRES_PASSWORD:-ygg_local_only}
+      POSTGRES_DB: yggcoffe
+    ports: ["127.0.0.1:54329:5432"]
+    volumes: ["coffee_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ygg -d yggcoffe"]
+      interval: 5s
+      retries: 10
+  migrate:
+    <<: *app
+    profiles: [store]
+    command: [pnpm, db:migrate]
+    depends_on:
+      postgres: { condition: service_healthy }
+  app:
+    <<: *app
+    build: .
+    profiles: [store]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+    healthcheck:
+      test:
+        [
+          CMD,
+          node,
+          -e,
+          "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      start_period: 30s
+      retries: 5
+  worker:
+    <<: *app
+    profiles: [store]
+    command: [pnpm, exec, tsx, scripts/worker-loop.ts]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+  proxy:
+    image: yggcoffe-proxy:local
+    build:
+      context: ./docker
+      dockerfile: proxy.Dockerfile
+    pull_policy: never
+    profiles: [store]
+    ports: ["127.0.0.1:${DOCKER_HTTP_PORT:-18080}:8080"]
+    depends_on:
+      app: { condition: service_healthy }
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+volumes:
+  coffee_data:

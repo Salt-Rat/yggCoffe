@@ -1,0 +1,22 @@
+node_modules/
+.next/
+.env
+.env.*
+!.env.example
+.local/
+test-results/
+playwright-report/
+coverage/
+*.tsbuildinfo
+.sites-checkout/
+
+# Generated files and local tool data
+/next-env.d.ts
+.pnpm-store/
+.vercel/
+/.aws/
+
+# Logs and operating system files
+*.log
+.DS_Store
+Thumbs.db

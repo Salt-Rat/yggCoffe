@@ -1,0 +1,24 @@
+# Dedicated disposable database. Never point these tests at store/customer data.
+name: yggcoffe-integration
+services:
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports: ["127.0.0.1:1026:1025", "127.0.0.1:8026:8025"]
+    environment:
+      MP_MAX_MESSAGES: 100
+    healthcheck:
+      test: [CMD, /mailpit, readyz]
+      interval: 2s
+      retries: 20
+  postgres-test:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_DB: ygg_http_test
+    ports: ["127.0.0.1:54340:5432"]
+    tmpfs: [/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U test -d ygg_http_test"]
+      interval: 2s
+      retries: 20

@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Grão na Porta — uma assinatura de cafés especiais para deixar cada manhã mais gostosa." />
+    <title>Grão na Porta — seu ritual, entregue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --ash: #bfc3ba;
+        --indigo: #313b72;
+        --umber: #874000;
+        --caramel: #bc5f04;
+        --forest: #0a3200;
+        --cream: #f6f0e5;
+        --paper: #fbf8f2;
+        --ink: #1e241f;
+        --muted: #687064;
+        --line: rgba(10, 50, 0, 0.14);
+        --shadow: 0 22px 60px rgba(35, 32, 22, 0.12);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--cream);
+        font-family: "DM Sans", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+
+      .announcement {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 34px;
+        padding: 8px 20px;
+        background: var(--forest);
+        color: #f4f0df;
+        font-size: 11px;
+        letter-spacing: .11em;
+        text-align: center;
+        text-transform: uppercase;
+      }
+
+      .site-header {
+        position: relative;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 22px 36px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--forest);
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: .03em;
+      }
+      .brand-mark {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        border: 1px solid var(--forest);
+        border-radius: 50%;
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: 15px;
+        font-style: italic;
+      }
+      .brand span:last-child { line-height: 1.05; }
+      .brand small {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 8px;
+        font-weight: 600;
+        letter-spacing: .15em;
+        text-transform: uppercase;
+      }
+      .nav { display: flex; align-items: center; gap: 30px; font-size: 12px; }
+      .nav a { color: #4b5249; transition: color .2s; }
+      .nav a:hover { color: var(--caramel); }
+      .header-cta, .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        border: 0;
+        border-radius: 999px;
+        font-weight: 700;
+        transition: transform .2s, background .2s, box-shadow .2s;
+      }
+      .header-cta {
+        padding: 11px 18px;
+        background: var(--caramel);
+        color: white;
+        font-size: 11px;
+      }
+      .header-cta:hover, .button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(135, 64, 0, .16); }
+      .menu-toggle { display: none; border: 0; background: transparent; color: var(--forest); font-size: 23px; }
+
+      .hero {
+        position: relative;
+        max-width: 1240px;
+        min-height: 610px;
+        margin: 0 auto;
+        padding: 42px 36px 84px;
+        overflow: hidden;
+      }
+      .hero::before {
+        position: absolute;
+        top: -140px;
+        right: -110px;
+        width: 470px;
+        height: 470px;
+        border-radius: 50%;
+        background: rgba(188, 95, 4, .08);
+        content: "";
+      }
+      .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.05fr; align-items: center; gap: 74px; }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 20px;
+        color: var(--caramel);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .17em;
+        text-transform: uppercase;
+      }
+      .eyebrow::before { width: 23px; height: 1px; background: var(--caramel); content: ""; }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 {
+        max-width: 570px;
+        margin-bottom: 22px;
+        color: var(--forest);
+        font-family: "Playfair Display", Georgia, serif;
+        font-size: clamp(50px, 6.3vw, 82px);
+        font-weight: 500;
+        letter-spacing: -.055em;
+        line-height: .96;
+      }
+      h1 em { color: var(--umber); font-weight: 500; }
+      .hero-copy { max-width: 450px; color: #5b6259; font-size: 16px; line-height: 1.65; }
+      .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 30px; }
+      .button { padding: 15px 23px; background: var(--forest); color: white; font-size: 12px; }
+      .button.secondary { border: 1px solid rgba(10, 50, 0, .22); background: transparent; color: var(--forest); }
+      .button.secondary:hover { background: rgba(10,50,0,.06); box-shadow: none; }
+      .hero-note { margin: 19px 0 0 3px; color: var(--muted); font-size: 11px; }
+      .hero-visual { position: relative; min-height: 488px; }
+      .hero-photo {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: min(100%, 480px);
+        height: 432px;
+        border-radius: 170px 170px 18px 18px;
+        background: linear-gradient(150deg, rgba(135,64,0,.08), rgba(10,50,0,.18)), url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1100&q=85") center/cover;
+        box-shadow: var(--shadow);
+      }
+      .hero-photo::after { position: absolute; inset: 0; border: 1px solid rgba(255,255,255,.42); border-radius: inherit; content: ""; }
+      .floating-card {
+        position: absolute;
+        right: -10px;
+        bottom: 15px;
+        width: 246px;
+        padding: 19px;
+        border-radius: 16px;
+        background: rgba(251,248,242,.94);
+        box-shadow: 0 14px 34px rgba(35,32,22,.14);
+        backdrop-filter: blur(8px);
+      }
+      .floating-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 13px; color: var(--forest); font-size: 11px; font-weight: 700; }
+      .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--caramel); box-shadow: 0 0 0 4px rgba(188,95,4,.12); }
+      .floating-card strong { display: block; color: var(--umber); font-family: "Playfair Display", Georgia, serif; font-size: 26px; font-weight: 500; }
+      .floating-card p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.4; }
+      .stamp { position: absolute; top: 32px; left: -30px; display: grid; width: 92px; height: 92px; place-items: center; border: 1px solid rgba(10,50,0,.34); border-radius: 50%; color: var(--forest); font-size: 9px; letter-spacing: .09em; text-align: center; text-transform: uppercase; transform: rotate(-13deg); }
+      .stamp::before { width: 70px; height: 70px; border: 1px dashed rgba(10,50,0,.34); border-radius: 50%; content: ""; position: absolute; }
+
+      .marquee { display: flex; gap: 32px; overflow: hidden; padding: 15px 0; background: var(--indigo); color: #f6f0e5; font-family: "Playfair Display", Georgia, serif; font-size: 16px; font-style: italic; white-space: nowrap; }
+      .marquee span { display: inline-flex; align-items: center; gap: 32px; }
+      .marquee span::after { color: var(--caramel); content: "✦"; font-family: Arial, sans-serif; font-size: 10px; font-style: normal; }
+
+      .section { max-width: 1240px; margin: 0 auto; padding: 110px 36px; }
+      .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 35px; margin-bottom: 48px; }
+      .section-heading h2 { max-width: 570px; margin-bottom: 0; color: var(--forest); font-family: "Playfair Display", Georgia, serif; font-size: clamp(36px, 4.7vw, 58px); font-weight: 500; letter-spacing: -.045em; line-height: 1.02; }
+      .section-heading h2 em { color: var(--umber); }
+      .section-heading p { max-width: 320px; margin-bottom: 4px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+      .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .step { min-height: 228px; padding: 25px; border: 1px solid rgba(10,50,0,.12); border-radius: 12px; background: rgba(251,248,242,.56); }
+      .step:nth-child(2) { transform: translateY(26px); background: rgba(49,59,114,.09); }
+      .step:nth-child(3) { background: rgba(188,95,4,.11); }
+      .step-number { display: flex; align-items: center; justify-content: space-between; margin-bottom: 45px; color: var(--caramel); font-size: 11px; font-weight: 700; letter-spacing: .14em; }
+      .step-icon { color: var(--forest); font-size: 19px; }
+      .step h3 { margin-bottom: 8px; color: var(--forest); font-family: "Playfair Display", Georgia, serif; font-size: 25px; font-weight: 500; }
+      .step p { max-width: 245px; margin-bottom: 0; color: #62685f; font-size: 12px; line-height: 1.55; }
+
+      .feature-band { background: var(--forest); color: var(--cream); }
+      .feature-grid { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 80px; }
+      .feature-photo { min-height: 555px; border-radius: 12px; background: linear-gradient(180deg, rgba(10,50,0,.08), rgba(10,50,0,.5)), url("https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1100&q=85") center/cover; }
+      .feature-content .eyebrow { color: #e7a15e; }
+      .feature-content .eyebrow::before { background: #e7a15e; }
+      .feature-content h2 { max-width: 580px; margin-bottom: 22px; font-family: "Playfair Display", Georgia, serif; font-size: clamp(38px, 4.7vw, 60px); font-weight: 500; letter-spacing: -.045em; line-height: 1.02; }
+      .feature-content h2 em { color: #e7a15e; }
+      .feature-content > p { max-width: 460px; color: rgba(246,240,229,.72); font-size: 14px; line-height: 1.75; }
+      .feature-list { display: grid; gap: 14px; margin: 34px 0 0; padding: 0; list-style: none; }
+      .feature-list li { display: flex; gap: 14px; align-items: flex-start; padding-top: 14px; border-top: 1px solid rgba(246,240,229,.19); color: rgba(246,240,229,.84); font-size: 13px; line-height: 1.45; }
+      .check { display: grid; flex: 0 0 22px; width: 22px; height: 22px; place-items: center; border-radius: 50%; background: var(--caramel); color: white; font-size: 11px; }
+
+      .plans-section { background: var(--paper); }
+      .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+      .plan { position: relative; display: flex; min-height: 360px; flex-direction: column; padding: 27px; border: 1px solid var(--line); border-radius: 14px; background: var(--cream); }
+      .plan.featured { border: 2px solid var(--caramel); background: #fffaf2; transform: translateY(-13px); }
+      .plan-badge { position: absolute; top: -12px; left: 22px; padding: 6px 11px; border-radius: 999px; background: var(--caramel); color: white; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+      .plan h3 { margin-bottom: 7px; color: var(--forest); font-family: "Playfair Display", Georgia, serif; font-size: 27px; font-weight: 500; }
+      .plan-description { min-height: 40px; margin-bottom: 22px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+      .price { color: var(--umber); font-family: "Playfair Display", Georgia, serif; font-size: 34px; }
+      .price small { color: var(--muted); font-family: "DM Sans", sans-serif; font-size: 11px; }
+      .plan ul { display: grid; gap: 10px; margin: 21px 0 24px; padding: 20px 0 0; border-top: 1px solid var(--line); list-style: none; }
+      .plan li { color: #5c6359; font-size: 11px; }
+      .plan li::before { margin-right: 8px; color: var(--caramel); content: "✓"; font-weight: 700; }
+      .plan .button { width: 100%; margin-top: auto; }
+
+      .quote-section { position: relative; overflow: hidden; background: var(--ash); }
+      .quote-section::before { position: absolute; top: -70px; right: 9%; color: rgba(255,255,255,.32); content: "“"; font-family: "Playfair Display", Georgia, serif; font-size: 310px; line-height: 1; }
+      .quote-wrap { position: relative; z-index: 1; display: grid; grid-template-columns: .55fr 1fr; align-items: center; gap: 80px; }
+      .quote-kicker { color: var(--forest); font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+      blockquote { max-width: 700px; margin: 0; color: var(--forest); font-family: "Playfair Display", Georgia, serif; font-size: clamp(28px, 4vw, 50px); font-style: italic; line-height: 1.12; }
+      .quote-author { margin: 24px 0 0; color: #687064; font-size: 12px; }
+
+      .faq-newsletter { display: grid; grid-template-columns: .95fr 1.05fr; gap: 80px; }
+      .faq h2, .newsletter h2 { margin-bottom: 28px; color: var(--forest); font-family: "Playfair Display", Georgia, serif; font-size: 40px; font-weight: 500; letter-spacing: -.04em; }
+      .faq-item { border-top: 1px solid var(--line); }
+      .faq-item:last-child { border-bottom: 1px solid var(--line); }
+      .faq-question { display: flex; align-items: center; justify-content: space-between; gap: 20px; width: 100%; padding: 17px 0; border: 0; background: transparent; color: var(--forest); font-size: 13px; font-weight: 600; text-align: left; }
+      .faq-question span { font-size: 20px; font-weight: 400; transition: transform .2s; }
+      .faq-answer { max-height: 0; overflow: hidden; color: var(--muted); font-size: 12px; line-height: 1.6; transition: max-height .3s ease, padding .3s ease; }
+      .faq-item.open .faq-answer { max-height: 100px; padding: 0 0 17px; }
+      .faq-item.open .faq-question span { transform: rotate(45deg); }
+      .newsletter { padding: 32px; border-radius: 15px; background: var(--indigo); color: var(--cream); }
+      .newsletter h2 { color: var(--cream); }
+      .newsletter p { max-width: 400px; color: rgba(246,240,229,.72); font-size: 13px; line-height: 1.6; }
+      .signup { display: flex; gap: 8px; margin-top: 25px; }
+      .signup input { min-width: 0; flex: 1; padding: 15px 16px; border: 0; border-radius: 999px; outline: 0; background: rgba(255,255,255,.94); color: var(--ink); font-size: 12px; }
+      .signup button { padding: 15px 18px; border: 0; border-radius: 999px; background: var(--caramel); color: white; font-size: 12px; font-weight: 700; }
+      .form-message { min-height: 17px; margin: 12px 0 0; color: #e7a15e; font-size: 11px; }
+
+      footer { padding: 32px 36px; background: var(--forest); color: rgba(246,240,229,.7); }
+      .footer-inner { display: flex; max-width: 1240px; margin: 0 auto; align-items: center; justify-content: space-between; gap: 20px; }
+      footer .brand { color: var(--cream); }
+      footer .brand small { color: rgba(246,240,229,.52); }
+      .footer-links { display: flex; gap: 22px; font-size: 11px; }
+      .footer-links a:hover { color: white; }
+      .copyright { font-size: 10px; }
+
+      @media (max-width: 800px) {
+        .site-header { padding: 18px 22px; }
+        .nav { position: absolute; top: 72px; left: 15px; right: 15px; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 10px; border-radius: 15px; background: var(--paper); box-shadow: var(--shadow); }
+        .nav.open { display: flex; }
+        .nav a, .nav .header-cta { padding: 12px; }
+        .menu-toggle { display: block; }
+        .header-cta { text-align: center; }
+        .hero { padding: 35px 22px 70px; }
+        .hero-grid, .feature-grid, .quote-wrap, .faq-newsletter { grid-template-columns: 1fr; gap: 45px; }
+        .hero-visual { min-height: 400px; }
+        .hero-photo { height: 360px; }
+        .stamp { left: -6px; }
+        .section { padding: 76px 22px; }
+        .section-heading { display: block; margin-bottom: 30px; }
+        .section-heading p { margin-top: 19px; }
+        .steps, .plans { grid-template-columns: 1fr; }
+        .step:nth-child(2), .plan.featured { transform: none; }
+        .feature-photo { min-height: 330px; order: 2; }
+        .feature-content { order: 1; }
+        .quote-wrap { gap: 20px; }
+        .faq-newsletter { gap: 58px; }
+        .footer-inner { align-items: flex-start; flex-direction: column; }
+      }
+      @media (max-width: 440px) {
+        h1 { font-size: 52px; }
+        .hero-photo { width: calc(100% - 4px); }
+        .floating-card { right: 0; width: 215px; }
+        .signup { flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="announcement">A primeira caixa é por nossa conta · frete grátis para todo o Brasil</div>
+    <header class="site-header">
+      <a class="brand" href="#inicio" aria-label="Grão na Porta, início">
+        <span class="brand-mark">g</span>
+        <span>grão na porta<small>assinatura de bons dias</small></span>
+      </a>
+      <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">☰</button>
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#planos">Planos</a>
+        <a href="#origem">Nossa origem</a>
+        <a class="header-cta" href="#planos">Escolher meu plano <span>↗</span></a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="inicio">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">Seu ritual começa aqui</div>
+            <h1>Todo mês, um novo <em>motivo</em> para acordar.</h1>
+            <p class="hero-copy">Cafés especiais, escolhidos por quem entende e entregues na sua porta no momento certo. Você assina a experiência. A gente cuida do resto.</p>
+            <div class="hero-actions">
+              <a class="button" href="#planos">Quero assinar <span>→</span></a>
+              <a class="button secondary" href="#como-funciona">Entender a ideia</a>
+            </div>
+            <p class="hero-note">Cancele quando quiser · sem letras miúdas</p>
+          </div>
+          <div class="hero-visual" aria-label="Café especial servido em uma mesa ensolarada">
+            <div class="hero-photo"></div>
+            <div class="stamp">feito para<br />suas manhãs</div>
+            <div class="floating-card">
+              <div class="floating-card-top"><span>próxima seleção</span><i class="status-dot"></i></div>
+              <strong>Torra de junho</strong>
+              <p>Notas de caramelo, castanha e uma acidez que acorda devagar.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="marquee" aria-hidden="true"><span>torra fresca <span>pausa boa <span>origens que surpreendem <span>todo mês</span></span></span></span><span>torra fresca <span>pausa boa <span>origens que surpreendem <span>todo mês</span></span></span></span></div>
+
+      <section class="section" id="como-funciona">
+        <div class="section-heading">
+          <h2>Uma pausa boa em <em>três movimentos.</em></h2>
+          <p>Você escolhe o ritmo. Nós cuidamos para que cada entrega chegue fresca, bonita e pronta para virar parte do seu dia.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div class="step-number">01 <span class="step-icon">◌</span></div><h3>Escolha seu ritual</h3><p>Defina a frequência, o perfil de sabor e o tamanho que combina com a sua casa.</p></article>
+          <article class="step"><div class="step-number">02 <span class="step-icon">✦</span></div><h3>Descubra novos grãos</h3><p>A cada ciclo, uma seleção especial e uma história diferente para provar.</p></article>
+          <article class="step"><div class="step-number">03 <span class="step-icon">⌁</span></div><h3>Receba na porta</h3><p>Seu pacote chega no ponto, com torra recente e aquele cheiro que muda a manhã.</p></article>
+        </div>
+      </section>
+
+      <section class="feature-band" id="origem">
+        <div class="section feature-grid">
+          <div class="feature-photo" role="img" aria-label="Grãos de café em uma fazenda"></div>
+          <div class="feature-content">
+            <div class="eyebrow">Por trás de cada grão</div>
+            <h2>De quem cultiva para quem <em>aprecia.</em></h2>
+            <p>O Grão na Porta aproxima você de pequenos produtores e torrefações que fazem tudo com tempo, cuidado e intenção. A seleção muda, mas o nosso jeito de escolher permanece.</p>
+            <ul class="feature-list">
+              <li><span class="check">✓</span><span><strong>Torra recente</strong><br />Selecionamos lotes pequenos para preservar aroma e personalidade.</span></li>
+              <li><span class="check">✓</span><span><strong>Histórias reais</strong><br />Você conhece a origem e o cuidado por trás de cada pacote.</span></li>
+              <li><span class="check">✓</span><span><strong>Escolha com liberdade</strong><br />Pause, troque o perfil ou cancele quando fizer sentido.</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="plans-section" id="planos">
+        <div class="section">
+          <div class="section-heading"><h2>Um plano para cada <em>ritmo.</em></h2><p>Comece do seu jeito. Todos os planos incluem entrega recorrente e acesso às seleções da temporada.</p></div>
+          <div class="plans">
+            <article class="plan"><h3>Descoberta</h3><p class="plan-description">Para quem gosta de experimentar uma novidade por vez.</p><div class="price">R$ 49 <small>/ ciclo</small></div><ul><li>250 g de café especial</li><li>Uma origem selecionada</li><li>Cartão de preparo</li></ul><button class="button secondary plan-button" data-plan="Descoberta">Escolher descoberta</button></article>
+            <article class="plan featured"><div class="plan-badge">mais escolhido</div><h3>Ritual</h3><p class="plan-description">Para transformar o café de todo dia em uma pausa especial.</p><div class="price">R$ 79 <small>/ ciclo</small></div><ul><li>500 g de café especial</li><li>Duas origens ou perfis</li><li>Frete incluso</li></ul><button class="button plan-button" data-plan="Ritual">Escolher ritual <span>→</span></button></article>
+            <article class="plan"><h3>Casa cheia</h3><p class="plan-description">Para dividir a descoberta com quem mora com você.</p><div class="price">R$ 119 <small>/ ciclo</small></div><ul><li>1 kg de café especial</li><li>Seleção personalizada</li><li>Frete incluso</li></ul><button class="button secondary plan-button" data-plan="Casa cheia">Escolher casa cheia</button></article>
+          </div>
+          <p id="plan-message" class="hero-note" style="text-align:center; margin-top:24px; min-height:18px;"></p>
+        </div>
+      </section>
+
+      <section class="quote-section">
+        <div class="section quote-wrap"><div class="quote-kicker">o que queremos entregar</div><div><blockquote>“Que abrir a porta e encontrar seu café seja o primeiro momento bom do dia.”</blockquote><p class="quote-author">— Grão na Porta, desde o primeiro gole</p></div></div>
+      </section>
+
+      <section class="section faq-newsletter">
+        <div class="faq"><h2>Perguntas que<br /><em>fazem sentido.</em></h2><div class="faq-item"><button class="faq-question">Posso escolher o tipo de café?<span>＋</span></button><div class="faq-answer">Sim. No primeiro passo você conta o que gosta e pode escolher entre perfis mais doces, equilibrados ou intensos.</div></div><div class="faq-item"><button class="faq-question">Quando recebo minha primeira caixa?<span>＋</span></button><div class="faq-answer">A primeira seleção é preparada após a confirmação da assinatura e chega conforme o prazo da sua região.</div></div><div class="faq-item"><button class="faq-question">Posso pausar ou cancelar?<span>＋</span></button><div class="faq-answer">Pode sim. A assinatura é flexível e você pode pausar, trocar de plano ou cancelar quando quiser.</div></div></div>
+        <div class="newsletter"><div class="eyebrow">Fique por perto</div><h2>Boas histórias também chegam por e-mail.</h2><p>Receba novidades da próxima seleção, dicas de preparo e um cupom para a sua primeira caixa.</p><form class="signup" id="signup-form"><input id="email" type="email" placeholder="seu melhor e-mail" aria-label="Seu melhor e-mail" required /><button type="submit">Quero receber</button></form><p class="form-message" id="form-message"></p></div>
+      </section>
+    </main>
+    <footer><div class="footer-inner"><a class="brand" href="#inicio"><span class="brand-mark">g</span><span>grão na porta<small>assinatura de bons dias</small></span></a><div class="footer-links"><a href="#como-funciona">Como funciona</a><a href="#planos">Planos</a><a href="#origem">Origem</a></div><span class="copyright">© 2026 Grão na Porta</span></div></footer>
+
+    <script>
+      const toggle = document.querySelector('.menu-toggle');
+      const nav = document.querySelector('.nav');
+      toggle?.addEventListener('click', () => { const open = nav.classList.toggle('open'); toggle.setAttribute('aria-expanded', open); });
+      document.querySelectorAll('.nav a').forEach((link) => link.addEventListener('click', () => nav.classList.remove('open')));
+      document.querySelectorAll('.faq-question').forEach((button) => button.addEventListener('click', () => button.parentElement.classList.toggle('open')));
+      document.querySelectorAll('.plan-button').forEach((button) => button.addEventListener('click', () => { document.querySelector('#plan-message').textContent = `Ótima escolha: plano ${button.dataset.plan}. Em breve você poderá finalizar sua assinatura por aqui.`; document.querySelector('#plan-message').scrollIntoView({ behavior: 'smooth', block: 'center' }); }));
+      document.querySelector('#signup-form')?.addEventListener('submit', (event) => { event.preventDefault(); const email = document.querySelector('#email'); document.querySelector('#form-message').textContent = `Pronto! Vamos avisar você em ${email.value}.`; email.value = ''; });
+    </script>
+  </body>
+</html>
