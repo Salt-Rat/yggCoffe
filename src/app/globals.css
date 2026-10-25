@@ -554,18 +554,50 @@ h2 {
 .bean-stage {
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   place-items: center;
   min-height: 435px;
+  min-width: 0;
   perspective: 900px;
 }
 .coffee-bean {
   width: 420px;
-  height: 420px;
+  max-width: 100%;
+  aspect-ratio: 1;
   position: relative;
   z-index: 1;
-  filter: brightness(var(--bean-brightness, 1))
-    saturate(var(--bean-saturation, 1));
-  transition: filter 0.5s;
+}
+.bean-sculpture {
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.bean-sculpture[data-dragging="true"] {
+  cursor: grabbing;
+}
+.bean-sculpture:focus-visible {
+  outline: 2px solid #8a6140;
+  outline-offset: 5px;
+  border-radius: 45%;
+}
+.bean-sculpture::after {
+  content: "";
+  position: absolute;
+  width: 49%;
+  height: 7%;
+  left: 25.5%;
+  bottom: 4%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    #50301b30,
+    #50301b0c 45%,
+    transparent 72%
+  );
+  filter: blur(6px);
+  transform: scale(var(--bean-shadow-scale, 1));
+  pointer-events: none;
 }
 .bean-clara {
   --bean-brightness: 1.3;
@@ -583,8 +615,14 @@ h2 {
   height: 100%;
   object-fit: contain;
 }
+.bean-fallback {
+  filter: brightness(var(--bean-brightness, 1))
+    saturate(var(--bean-saturation, 1));
+  transition: filter 0.5s;
+}
 .coffee-bean canvas {
   visibility: hidden;
+  pointer-events: none;
 }
 .coffee-bean[data-ready="true"] canvas {
   visibility: visible;
@@ -1617,7 +1655,6 @@ legend {
   }
   .coffee-bean {
     width: 340px;
-    height: 340px;
   }
   .roast-facts {
     padding-left: 0;
@@ -1806,7 +1843,6 @@ legend {
   }
   .coffee-bean {
     width: 340px;
-    height: 340px;
   }
   .bean-orbit {
     width: 78%;

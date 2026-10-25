@@ -68,7 +68,7 @@ export function RoastExperience({
               roast={current.id}
             />
             <span className="bean-caption">
-              <MoveDown size={14} /> ROLE PARA DESCOBRIR CADA LADO
+              <MoveDown size={14} /> ROLE OU ARRASTE PARA EXPLORAR
             </span>
           </div>
           <div className="roast-facts" aria-live="polite">

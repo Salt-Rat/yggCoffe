@@ -45,3 +45,26 @@ Depois da validação local, operação real ainda exige admin com credenciais p
 - Contas sintéticas `@example.test` usadas pelo navegador são desativadas ao final do cenário; auditoria é preservada. Administradores de teste existem apenas no laboratório isolado.
 - Não houve publicação nem alteração de outros projetos do Docker. Preservados o plano, `dist/index.html`, `server.mjs` e `.sites-checkout`.
 - Leia `AGENTS.md` e documentação local do Next em `node_modules/next/dist/docs/` antes de alterar convenções do framework.
+
+## Atualização visual do grão — 23/10/2026
+
+- Pedido mais recente: tornar a textura mais realista e usar o mesmo modelo nas torras clara, média e escura, alterando somente as cores. Não reiniciar a implementação anterior.
+- `src/components/coffee-bean-surface.ts` reúne a geometria, os shaders e a geração do normal map. `src/components/coffee-bean.tsx` controla WebGL, carregamento da textura, rolagem, arraste e teclado.
+- Material ativo: `public/images/coffee-skin-v4.webp`, gerado com a ferramenta integrada `image_gen`, usando o grão original como referência. Vincos e poros produzem relevo através de um normal map calculado com Sobel e mipmaps. O ruído procedural foi reduzido.
+- Clara, média e escura compartilham geometria, textura, rugosidade, iluminação e animação; somente a paleta de cor muda. Isso vale mesmo quando os perfis têm URLs de imagem diferentes. O renderer não é recriado ao alternar a torra.
+- Permanecem os controles por rolagem, arraste horizontal e teclado, rolagem vertical no celular, movimento reduzido, pausa fora da tela, recuperação do contexto WebGL e PNG alternativo.
+- O layout do grão se adapta a telas de 320 px. As imagens v2/v3 foram preservadas; a renderização utiliza v4.
+- Prompt, referências e detalhes técnicos: `docs/coffee-bean-3d.md`. Visão geral: `docs/ASSETS.md`.
+- A comparação em Chromium confirmou o mesmo programa WebGL e buffer de geometria nas três torras, valores de cor distintos e ausência de erros WebGL. Capturas de frente e verso estão em `test-results/coffee-bean/`.
+- Validação final desta atualização: TypeScript, ESLint, Prettier e build de produção aprovados. O build foi repetido fora do sandbox após uma falha transitória na leitura de `tsc --showConfig`. Testes Chromium aprovaram arraste, teclado, troca de torras, pausa fora da tela, perda/restauração de WebGL, movimento reduzido, toque horizontal, rolagem vertical, largura de 320 px e alternativa sem WebGL. Resultado em `test-results/coffee-bean/validation-v4.json`; esses testes visuais não repetem a suíte comercial de 79 testes registrada acima.
+- Prévia local desta revisão: `http://localhost:3000/#torras`. O servidor deve ser iniciado com `pnpm dev` caso não esteja ativo após um reset. Esta revisão não reconstruiu os contêineres Docker nem publicou o site.
+
+## Recuperação da frente e verso natural — 25/10/2026
+
+- Após `git fetch origin`, `main` e `origin/main` apontavam para `1f2b400`, sem commits locais pendentes de envio. Havia nove arquivos locais alterados ou novos, incluindo a animação e as texturas v3/v4; essas alterações foram preservadas.
+- A frente fotográfica de `public/images/coffee-bean.png`, já presente no Git, voltou a ser projetada sobre a malha atual. A iluminação preserva seus detalhes e reflexos originais durante a rotação. O sulco foi suavizado para evitar duplicar a fenda fotografada.
+- O verso foi ajustado a partir do grão no alto à direita de `cafegrainback.PNG`, fornecido pelo usuário. A ferramenta integrada `image_gen` produziu `public/images/coffee-skin-v5.webp`, com pele mais lisa, poros finos e poucas fissuras. Prompt e referências estão em `docs/coffee-bean-3d.md`.
+- Frente, laterais e verso compartilham a tonalidade de cada torra. A mistura percorre uma faixa mais ampla da curvatura lateral. A ondulação do verso é menor, com variação contínua até a frente, para preservar a continuidade da malha e produzir reflexos suaves.
+- Preservados rolagem, arraste, teclado, movimento reduzido, pausa fora da tela, recuperação WebGL e alternativa em PNG. O teste de interação após restaurar a frente passou no desktop e no celular, incluindo toque horizontal, rolagem vertical e largura de 320 px. Relatório: `test-results/coffee-bean/validation-restored-front.json`.
+- A validação da textura v5 confere frente, lateral e verso nas três torras, carregamento das imagens, ausência de erros WebGL/JavaScript, reutilização do programa e buffer de geometria e ausência de transbordamento no celular. Capturas e relatório: `test-results/coffee-bean/v5-*.png` e `validation-v5.json`.
+- Prévia: `http://localhost:3000/#torras`. Sem commit, push, publicação ou reconstrução do Docker. Dez arquivos permanecem pendentes no Git, contando a nova textura v5.
